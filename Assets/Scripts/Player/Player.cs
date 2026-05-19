@@ -9,6 +9,10 @@ public class Player : MonoBehaviour
     public Vector2 friction = new Vector2(.1f, 0);
 
     public float speed;
+    public float speedRun;
+
+    private float _currentSpeed;
+    private bool _isRunning = false;
 
     public float forceJump = 2f;
 
@@ -20,19 +24,37 @@ public class Player : MonoBehaviour
 
     private void HandleMovement()
     {
+        if (Input.GetKey(KeyCode.LeftControl))
+            _currentSpeed = speedRun;
+        else
+            _currentSpeed = speed;
+
+        //_isRunning = Input.GetKey(KeyCode.LeftControl);
+
+
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             //myRigidBody.MovePosition(myRigidBody.position - velocity * Time.deltaTime);
-            myRigidBody.velocity = new Vector2(-speed, myRigidBody.velocity.y);
+            myRigidBody.velocity = new Vector2(-_currentSpeed, myRigidBody.velocity.y);
+
+            //Forma alternativa de fazer verificação condicional em uma única linha
+            //myRigidBody.velocity = new Vector2(Input.GetKey(KeyCode.LeftControl) ? -speed : -speedRun, myRigidBody.velocity.y);
+
+
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
             //myRigidBody.MovePosition(myRigidBody.position + velocity * Time.deltaTime);
-            myRigidBody.velocity = new Vector2(speed, myRigidBody.velocity.y);
+            myRigidBody.velocity = new Vector2(_currentSpeed, myRigidBody.velocity.y);
+
+            //Forma alternativa de fazer verificação condicional em uma única linha
+            //myRigidBody.velocity = new Vector2(Input.GetKey(KeyCode.LeftControl) ? speed : speedRun, myRigidBody.velocity.y);
+
 
         }
 
-        if(myRigidBody.velocity.x > 0)
+
+        if (myRigidBody.velocity.x > 0)
         {
             myRigidBody.velocity += friction;
         }
