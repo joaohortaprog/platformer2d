@@ -25,10 +25,16 @@ public class Player : MonoBehaviour
     public Animator animator;
     public float playerSwipeDuration = .1f;
 
-
     private float _currentSpeed;
     private bool _isRunning = false;
 
+    // Guarda a escala original do personagem
+    private Vector3 _defaultScale;
+
+    private void Start()
+    {
+        _defaultScale = myRigidBody.transform.localScale;
+    }
 
     private void Update()
     {
@@ -43,50 +49,51 @@ public class Player : MonoBehaviour
             _currentSpeed = speedRun;
             animator.speed = 2;
         }
-
         else
         {
             _currentSpeed = speed;
             animator.speed = 1;
         }
-            
 
         //_isRunning = Input.GetKey(KeyCode.LeftControl);
-
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             //myRigidBody.MovePosition(myRigidBody.position - velocity * Time.deltaTime);
             myRigidBody.velocity = new Vector2(-_currentSpeed, myRigidBody.velocity.y);
-            if(myRigidBody.transform.localScale.x != -0.5f)
+
+            if (myRigidBody.transform.localScale.x > 0)
             {
-                myRigidBody.transform.DOScaleX(-0.5f, playerSwipeDuration);
+                DOTween.Kill(myRigidBody.transform);
+
+                myRigidBody.transform
+                    .DOScaleX(-_defaultScale.x, playerSwipeDuration)
+                    .SetEase(Ease.OutSine);
             }
 
             animator.SetBool(boolRun, true);
 
             //Forma alternativa de fazer verificação condicional em uma única linha
             //myRigidBody.velocity = new Vector2(Input.GetKey(KeyCode.LeftControl) ? -speed : -speedRun, myRigidBody.velocity.y);
-
-
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
             //myRigidBody.MovePosition(myRigidBody.position + velocity * Time.deltaTime);
             myRigidBody.velocity = new Vector2(_currentSpeed, myRigidBody.velocity.y);
-            if (myRigidBody.transform.localScale.x != 0.5f)
-            {
-                myRigidBody.transform.DOScaleX(0.5f, playerSwipeDuration);
-            }
 
+            if (myRigidBody.transform.localScale.x < 0)
+            {
+                DOTween.Kill(myRigidBody.transform);
+
+                myRigidBody.transform
+                    .DOScaleX(_defaultScale.x, playerSwipeDuration)
+                    .SetEase(Ease.OutSine);
+            }
 
             animator.SetBool(boolRun, true);
 
-
             //Forma alternativa de fazer verificação condicional em uma única linha
             //myRigidBody.velocity = new Vector2(Input.GetKey(KeyCode.LeftControl) ? speed : speedRun, myRigidBody.velocity.y);
-
-
         }
         else
         {
@@ -95,7 +102,6 @@ public class Player : MonoBehaviour
             myRigidBody.velocity = new Vector2(0, myRigidBody.velocity.y);
         }
 
-
         if (myRigidBody.velocity.x > 0)
         {
             myRigidBody.velocity += friction;
@@ -103,9 +109,7 @@ public class Player : MonoBehaviour
         else if (myRigidBody.velocity.x < 0)
         {
             myRigidBody.velocity -= friction;
-
         }
-
     }
 
     private void HandleJump()
@@ -113,18 +117,32 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             myRigidBody.velocity = Vector2.up * forceJump;
-            myRigidBody.transform.localScale = Vector2.one;
+
+            // Mantém a direção para a qual o personagem está olhando
+            float direction = Mathf.Sign(myRigidBody.transform.localScale.x);
+
+            // Restaura a escala original antes de iniciar o squash/stretch
+            myRigidBody.transform.localScale = new Vector3(
+                _defaultScale.x * direction,
+                _defaultScale.y,
+                _defaultScale.z);
 
             DOTween.Kill(myRigidBody.transform);
 
-            HandleJumpScale();
+            HandleJumpScale(direction);
         }
-        
     }
 
-    private void HandleJumpScale()
+    private void HandleJumpScale(float direction)
     {
-        myRigidBody.transform.DOScaleY(jumpScaleY, animDuration).SetLoops(2, LoopType.Yoyo).SetEase(ease);
-        myRigidBody.transform.DOScaleX(jumpScaleX, animDuration).SetLoops(2, LoopType.Yoyo).SetEase(ease);
+        Vector3 jumpScale = new Vector3(
+            _defaultScale.x * jumpScaleX * direction,
+            _defaultScale.y * jumpScaleY,
+            _defaultScale.z);
+
+        myRigidBody.transform
+            .DOScale(jumpScale, animDuration)
+            .SetLoops(2, LoopType.Yoyo)
+            .SetEase(ease);
     }
 }
