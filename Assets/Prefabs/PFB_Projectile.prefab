@@ -109,6 +109,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3539507229412566069}
   - component: {fileID: 3539507229412566066}
+  - component: {fileID: -4872190893591344873}
+  - component: {fileID: 1082510462584244418}
   m_Layer: 0
   m_Name: PFB_Projectile
   m_TagString: Untagged
@@ -143,4 +145,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40655fb77a8cb2448bb133a99953cc34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  direction: {x: 2, y: 0, z: 0}
+  direction: {x: 10, y: 0, z: 0}
+  timeToDestroy: 2
+  side: 1
+  damageAmount: 1
+--- !u!210 &-4872190893591344873
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3539507229412566067}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 20
+--- !u!50 &1082510462584244418
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3539507229412566067}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
