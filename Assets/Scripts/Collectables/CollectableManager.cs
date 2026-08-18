@@ -5,7 +5,7 @@ using Personal.Core.Singleton;
 
 public class CollectableManager : Singleton<CollectableManager>
 {
-    public int coins;
+    public SOInt coins;
 
     private void Start()
     {
@@ -14,12 +14,12 @@ public class CollectableManager : Singleton<CollectableManager>
 
     private void Reset()
     {
-        coins = 0;
+        coins.value = 0;
     }
 
     public void AddCoins(int amount = 1)
     {
-        coins += amount;
+        coins.value += amount;
     }
 
 }

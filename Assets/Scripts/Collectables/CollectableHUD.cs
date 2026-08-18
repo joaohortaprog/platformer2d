@@ -7,6 +7,6 @@ public class CollectableHUD : MonoBehaviour
 
     private void Update()
     {
-        coinsText.text = CollectableManager.Instance.coins.ToString();
+        coinsText.text = CollectableManager.Instance.coins.value.ToString();
     }
 }
