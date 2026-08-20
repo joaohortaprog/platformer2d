@@ -16,9 +16,13 @@ public class Player : MonoBehaviour
     public float forceJump = 2f;
 
     [Header("Animation setup")]
-    public float jumpScaleY = 1.5f;
+    /*public float jumpScaleY = 1.5f;
     public float jumpScaleX = .75f;
-    public float animDuration = .3f;
+    public float animDuration = .3f;*/
+    public SO_Float soJumpScaleY;
+    public SO_Float soJumpScaleX;
+    public SO_Float soAnimationDuration;
+
     public Ease ease = Ease.OutBack;
 
     [Header("Animation Player")]
@@ -153,12 +157,12 @@ public class Player : MonoBehaviour
     private void HandleJumpScale(float direction)
     {
         Vector3 jumpScale = new Vector3(
-            _defaultScale.x * jumpScaleX * direction,
-            _defaultScale.y * jumpScaleY,
+            _defaultScale.x * soJumpScaleX.value * direction,
+            _defaultScale.y * soJumpScaleY.value,
             _defaultScale.z);
 
         myRigidBody.transform
-            .DOScale(jumpScale, animDuration)
+            .DOScale(jumpScale, soAnimationDuration.value)
             .SetLoops(2, LoopType.Yoyo)
             .SetEase(ease);
     }

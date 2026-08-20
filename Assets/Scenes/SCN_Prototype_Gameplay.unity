@@ -1566,9 +1566,9 @@ MonoBehaviour:
   speed: 15
   speedRun: 15
   forceJump: 25
-  jumpScaleY: 1.1
-  jumpScaleX: 0.75
-  animDuration: 0.3
+  soJumpScaleY: {fileID: 11400000, guid: e8979516d7277254a8a03132eeef1b12, type: 2}
+  soJumpScaleX: {fileID: 11400000, guid: ffe1cfc33d16da74daa8b4720be5508c, type: 2}
+  soAnimationDuration: {fileID: 11400000, guid: 5bc3e582a11a387429efac4f3a089157, type: 2}
   ease: 27
   boolRun: Run
   triggerDeath: Death
