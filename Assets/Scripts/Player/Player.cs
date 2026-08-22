@@ -9,32 +9,15 @@ public class Player : MonoBehaviour
     public Rigidbody2D myRigidBody;
     public HealthBase healthBase;
 
-    [Header("Movement setup")]
-    public Vector2 friction = new Vector2(.1f, 0);
-    public float speed;
-    public float speedRun;
-    public float forceJump = 2f;
-
-    [Header("Animation setup")]
-    /*public float jumpScaleY = 1.5f;
-    public float jumpScaleX = .75f;
-    public float animDuration = .3f;*/
-    public SO_Float soJumpScaleY;
-    public SO_Float soJumpScaleX;
-    public SO_Float soAnimationDuration;
-
-    public Ease ease = Ease.OutBack;
-
-    [Header("Animation Player")]
-    public string boolRun = "Run";
-    public string triggerDeath = "Death";
     public Animator animator;
-    public float playerSwipeDuration = .1f;
+
+    [Header("Setup")]
+    public SOPlayerSetup sOPlayerSetup;
 
     private float _currentSpeed;
     private bool _isRunning = false;
 
-    
+
     // Guarda a escala original do personagem
     private Vector3 _defaultScale;
 
@@ -49,7 +32,7 @@ public class Player : MonoBehaviour
     private void OnPlayerKill()
     {
         healthBase.OnKill -= OnPlayerKill;
-        animator.SetTrigger(triggerDeath);
+        animator.SetTrigger(sOPlayerSetup.triggerDeath);
     }
 
     private void Start()
@@ -67,12 +50,12 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            _currentSpeed = speedRun;
+            _currentSpeed = sOPlayerSetup.speedRun;
             animator.speed = 2;
         }
         else
         {
-            _currentSpeed = speed;
+            _currentSpeed = sOPlayerSetup.speed;
             animator.speed = 1;
         }
 
@@ -88,11 +71,11 @@ public class Player : MonoBehaviour
                 DOTween.Kill(myRigidBody.transform);
 
                 myRigidBody.transform
-                    .DOScaleX(-_defaultScale.x, playerSwipeDuration)
+                    .DOScaleX(-_defaultScale.x, sOPlayerSetup.playerSwipeDuration)
                     .SetEase(Ease.OutSine);
             }
 
-            animator.SetBool(boolRun, true);
+            animator.SetBool(sOPlayerSetup.boolRun, true);
 
             //Forma alternativa de fazer verificação condicional em uma única linha
             //myRigidBody.velocity = new Vector2(Input.GetKey(KeyCode.LeftControl) ? -speed : -speedRun, myRigidBody.velocity.y);
@@ -107,29 +90,29 @@ public class Player : MonoBehaviour
                 DOTween.Kill(myRigidBody.transform);
 
                 myRigidBody.transform
-                    .DOScaleX(_defaultScale.x, playerSwipeDuration)
+                    .DOScaleX(_defaultScale.x, sOPlayerSetup.playerSwipeDuration)
                     .SetEase(Ease.OutSine);
             }
 
-            animator.SetBool(boolRun, true);
+            animator.SetBool(sOPlayerSetup.boolRun, true);
 
             //Forma alternativa de fazer verificação condicional em uma única linha
             //myRigidBody.velocity = new Vector2(Input.GetKey(KeyCode.LeftControl) ? speed : speedRun, myRigidBody.velocity.y);
         }
         else
         {
-            animator.SetBool(boolRun, false);
+            animator.SetBool(sOPlayerSetup.boolRun, false);
 
             myRigidBody.velocity = new Vector2(0, myRigidBody.velocity.y);
         }
 
         if (myRigidBody.velocity.x > 0)
         {
-            myRigidBody.velocity += friction;
+            myRigidBody.velocity += sOPlayerSetup.friction;
         }
         else if (myRigidBody.velocity.x < 0)
         {
-            myRigidBody.velocity -= friction;
+            myRigidBody.velocity -= sOPlayerSetup.friction;
         }
     }
 
@@ -137,7 +120,7 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            myRigidBody.velocity = Vector2.up * forceJump;
+            myRigidBody.velocity = Vector2.up * sOPlayerSetup.forceJump;
 
             // Mantém a direção para a qual o personagem está olhando
             float direction = Mathf.Sign(myRigidBody.transform.localScale.x);
@@ -157,14 +140,14 @@ public class Player : MonoBehaviour
     private void HandleJumpScale(float direction)
     {
         Vector3 jumpScale = new Vector3(
-            _defaultScale.x * soJumpScaleX.value * direction,
-            _defaultScale.y * soJumpScaleY.value,
+            _defaultScale.x * sOPlayerSetup.jumpScaleX * direction,
+            _defaultScale.y * sOPlayerSetup.jumpScaleY,
             _defaultScale.z);
 
         myRigidBody.transform
-            .DOScale(jumpScale, soAnimationDuration.value)
+            .DOScale(jumpScale, sOPlayerSetup.animDuration)
             .SetLoops(2, LoopType.Yoyo)
-            .SetEase(ease);
+            .SetEase(sOPlayerSetup.ease);
     }
 
     public void DestroyMe()
