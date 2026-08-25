@@ -6,6 +6,10 @@ using UnityEngine;
 [CreateAssetMenu]
 public class SOPlayerSetup : ScriptableObject
 {
+
+    public Animator player;
+    public SOString sOStringName;
+
     [Header("Movement setup")]
     public Vector2 friction = new Vector2(.1f, 0);
     public float speed;

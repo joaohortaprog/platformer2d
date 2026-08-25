@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b49f0b174a7ea84cb98e3b341313159, type: 3}
-  m_Name: SO_Player_01
+  m_Name: SO_Player_02
   m_EditorClassIdentifier: 
-  player: {fileID: 6413013834153556191, guid: 00afc9fb4087652419d090da0b825d97, type: 3}
-  sOStringName: {fileID: 11400000, guid: 77a7f7178cf2bb9488b817740d2b2023, type: 2}
+  player: {fileID: 6413013834153556191, guid: c6c991fb458a9e540801d7ede6cfca47, type: 3}
+  sOStringName: {fileID: 11400000, guid: 0c447e2a4e210da4190246b4d8238572, type: 2}
   friction: {x: -1.3, y: 0}
-  speed: 15
-  speedRun: 15
-  forceJump: 25
+  speed: 30
+  speedRun: 20
+  forceJump: 20
   jumpScaleY: 1.1
   jumpScaleX: 0.75
   animDuration: 0.3

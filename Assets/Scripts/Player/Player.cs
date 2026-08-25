@@ -9,13 +9,15 @@ public class Player : MonoBehaviour
     public Rigidbody2D myRigidBody;
     public HealthBase healthBase;
 
-    public Animator animator;
+    //public Animator animator;
 
     [Header("Setup")]
     public SOPlayerSetup sOPlayerSetup;
 
     private float _currentSpeed;
     private bool _isRunning = false;
+
+    private Animator _currentPlayer;
 
 
     // Guarda a escala original do personagem
@@ -27,12 +29,14 @@ public class Player : MonoBehaviour
         {
             healthBase.OnKill += OnPlayerKill;
         }
+
+        _currentPlayer = Instantiate(sOPlayerSetup.player, transform);
     }
 
     private void OnPlayerKill()
     {
         healthBase.OnKill -= OnPlayerKill;
-        animator.SetTrigger(sOPlayerSetup.triggerDeath);
+        _currentPlayer.SetTrigger(sOPlayerSetup.triggerDeath);
     }
 
     private void Start()
@@ -51,12 +55,12 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift))
         {
             _currentSpeed = sOPlayerSetup.speedRun;
-            animator.speed = 2;
+            _currentPlayer.speed = 2;
         }
         else
         {
             _currentSpeed = sOPlayerSetup.speed;
-            animator.speed = 1;
+            _currentPlayer.speed = 1;
         }
 
         //_isRunning = Input.GetKey(KeyCode.LeftControl);
@@ -75,7 +79,7 @@ public class Player : MonoBehaviour
                     .SetEase(Ease.OutSine);
             }
 
-            animator.SetBool(sOPlayerSetup.boolRun, true);
+            _currentPlayer.SetBool(sOPlayerSetup.boolRun, true);
 
             //Forma alternativa de fazer verificação condicional em uma única linha
             //myRigidBody.velocity = new Vector2(Input.GetKey(KeyCode.LeftControl) ? -speed : -speedRun, myRigidBody.velocity.y);
@@ -94,14 +98,14 @@ public class Player : MonoBehaviour
                     .SetEase(Ease.OutSine);
             }
 
-            animator.SetBool(sOPlayerSetup.boolRun, true);
+            _currentPlayer.SetBool(sOPlayerSetup.boolRun, true);
 
             //Forma alternativa de fazer verificação condicional em uma única linha
             //myRigidBody.velocity = new Vector2(Input.GetKey(KeyCode.LeftControl) ? speed : speedRun, myRigidBody.velocity.y);
         }
         else
         {
-            animator.SetBool(sOPlayerSetup.boolRun, false);
+            _currentPlayer.SetBool(sOPlayerSetup.boolRun, false);
 
             myRigidBody.velocity = new Vector2(0, myRigidBody.velocity.y);
         }
