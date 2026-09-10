@@ -6,6 +6,15 @@ public class CollectableBase : MonoBehaviour
 {
 
     public string compareTag = "Player";
+    public ParticleSystem collectParticleSystem;
+
+    private void Awake()
+    {
+        if (collectParticleSystem != null)
+        {
+            collectParticleSystem.transform.SetParent(null);
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -18,18 +27,15 @@ public class CollectableBase : MonoBehaviour
     protected virtual void Collect()
     {
         Debug.Log("Collect");
-        gameObject.SetActive(false);
         OnCollect();
+        gameObject.SetActive(false);
     }
 
     protected virtual void OnCollect()
     {
-
+        collectParticleSystem.Play();
     }
-
 }
 
-/*public class CollectableCoin : CollectableBase
-{
 
-}*/
+
