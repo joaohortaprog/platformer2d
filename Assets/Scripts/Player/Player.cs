@@ -26,6 +26,10 @@ public class Player : MonoBehaviour
     public LayerMask groundLayer;
     public ParticleSystem jumpVFX;
 
+    [Header("Jump Audio")]
+    [SerializeField] private AudioSource jumpAudioSource;
+    [SerializeField] private AudioClip jumpSound;
+
 
     // Guarda a escala original do personagem
     private Vector3 _defaultScale;
@@ -159,6 +163,12 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
             myRigidBody.velocity = Vector2.up * sOPlayerSetup.forceJump;
+
+            // Reproduz o som do pulo
+            if (jumpAudioSource != null && jumpSound != null)
+            {
+                jumpAudioSource.PlayOneShot(jumpSound);
+            }
 
             // Mantém a direção para a qual o personagem está olhando
             float direction = Mathf.Sign(myRigidBody.transform.localScale.x);
